@@ -400,7 +400,7 @@ var redirectlist = [{
 		find: /http:\/\/static\.youku\.com(\/v[\d\.]*)?\/v\/swf\/q?player.*\.swf/i,
 		exfind: /(bili|acfun)/,
 		//		replace: localflag ? getUrl('swf/loader.swf') : baesite[ getRandom(3) ] + 'loader.swf',	//多服务器流量一样的时候,进行均衡.目前由于流量不一致,不启用.下方语句同理
-		replace: localflag ? getUrl('swf/loader.swf') : baesite[2] + 'player.swf',
+		replace: localflag ? getUrl('swf/player.swf') : baesite[2] + 'player.swf',
 		extra: "crossdomain"
 	}, {
 		name: "ku6",
@@ -469,6 +469,11 @@ var redirectlist = [{
 		replace: localflag ? getUrl('swf/iqiyi5.swf') : baesite[2] + 'iqiyi5.swf',
 		extra: "adkillrule"
 	}, {
+		name: "iqiyip2p",
+		find: /http:\/\/www\.iqiyi\.com\/common\/flashplayer\/\d+\/\d[a-z0-9]*.swf/i,
+		replace: 'http://www.iqiyi.com/player/20140709110406/20088.swf',
+		extra: "adkillrule"
+	}, {
 		name: "pps",
 		find: /http:\/\/www\.iqiyi\.com\/player\/cupid\/.*\/pps[\w]+.swf/i,
 		replace: localflag ? getUrl('swf/pps.swf') : baesite[2] + 'pps.swf',
@@ -481,8 +486,8 @@ var redirectlist = [{
 		extra: "adkillrule"
 	}, {
 		name: "duowan",
-		find: /http:\/\/assets\.dwstatic\.com\/.*\/vppp\.swf/i,
-		replace: baesite[2] + 'duowan.swf',
+		find: /http:\/\/untitled\.dwstatic\.com\/.*/i,
+		replace: 'about:blank',
 		extra: "adkillrule"
 	}
 ];
