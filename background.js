@@ -434,7 +434,7 @@ var redirectlist = [{
 		extra: "adkillrule"
 	}, {
 		name: "letv",
-		find: /http:\/\/.*letv[\w]*\.com\/(hz|.*\/(?!(Live|seed))(S[\w]{2,3})?(?!Live)[\w]{4})Player[^\.]*\.swf/i,
+		find: /http:\/\/.*letv[\w]*\.com\/.*\/((?!(Live|seed))(S[\w]{2,3})?[\w]{4})Player*\.swf/i,
 		exfind: /(bili|acfun|com\/zt|duowan)/i,
 		//		replace: getUrl('swf/letv.swf'),
 		//		replace: localflag ? getUrl('swf/letv.swf') : baesite[ getRandom(3) ] + 'letv.swf',
@@ -444,6 +444,11 @@ var redirectlist = [{
 		name: "letvpccs",
 		find: /http:\/\/www.letv.com\/zt\/cmsapi\/playerapi\/pccs_(?!live).*_(\d+)\.xml/i,
 		replace: "http://www.letv.com/zt/cmsapi/playerapi/pccs_sdk_$1.xml",
+		extra: "adkillrule"
+	}, {
+		name: "letvhzpccs",
+		find: /http:\/\/www.letv.com\/.*\/playerapi\/pccs_(?!live).*_(\d+)\.xml/i,
+		replace: "http://www.letv.com/zt/cmsapi/playerapi/pccs_sdk_2014061610.xml",
 		extra: "adkillrule"
 	},/*{
 		name: "letvskin",
