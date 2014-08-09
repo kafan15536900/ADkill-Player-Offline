@@ -462,7 +462,7 @@ var redirectlist = [{
 		extra: "adkillrule"
 	}, {
 		name: "iqiyi",
-		find: /http:\/\/www\.iqiyi\.com\/(player\/(\d+\/Player|[a-z0-9]*)|common\/flashplayer\/\d+\/MainPlayer_.*)\.swf/i,
+		find: /http:\/\/www\.iqiyi\.com\/(player\/(\d+\/Player|[a-z0-9]*)|common\/flashplayer\/\d+\/(Main)?Player_.*)\.swf/i,
 		exfind: /(baidu|61|178)\.iqiyi\.com|weibo|yaku\.tv|bilibili|acfun/,
 		//		replace: getUrl('swf/iqiyi5.swf'),
 		//		replace: localflag ? getUrl('swf/iqiyi5.swf') : baesite[ getRandom(3) ] + 'iqiyi5.swf',
@@ -540,7 +540,7 @@ var proxylist = [{
 		extra: "crossdomain"
 	},{
 		name: "crossdomain_iqiyi|pps-1",
-		find: /http:\/\/www\.iqiyi\.com\/(player\/(\d+\/Player|[a-z0-9]*|cupid\/.*\/(pps[\w]+|clear))|common\/flashplayer\/\d+\/MainPlayer_.*)\.swf/i,
+		find: /http:\/\/www\.iqiyi\.com\/(player\/(\d+\/Player|[a-z0-9]*|cupid\/.*\/(pps[\w]+|clear))|common\/flashplayer\/\d+\/(Main)?Player_.*)\.swf/i,
 		//monitor: /.*skins\/s[\d]+\.swf/i,
 		monitor: /http:\/\/data\.video\.qiyi\.com\/crossdomain\.xml/i,
 		extra: "crossdomain"
