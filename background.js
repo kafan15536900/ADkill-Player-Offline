@@ -479,6 +479,11 @@ var redirectlist = [{
 		exfind: /(bili|acfun)/i,
 		replace: baesite[2] + 'sohu.swf',
 		extra: "adkillrule"
+	}, {
+		name: "duowan",
+		find: /http:\/\/assets\.dwstatic\.com\/.*\/vppp\.swf/i,
+		replace: baesite[2] + 'duowan.swf',
+		extra: "adkillrule"
 	}
 ];
 //Referer修改规则
