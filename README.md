@@ -2,6 +2,7 @@ Fork from Adkill and Media Download 0.42.3
 
 ========================
 This is offline mod.
+*Seeking new features? Find it in Dev Branche.
 Requires:
 
 PPAPI Shockwave Flash <= 12.0.0.44

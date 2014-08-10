@@ -462,7 +462,7 @@ var redirectlist = [{
 		extra: "adkillrule"
 	}, {
 		name: "iqiyi",
-		find: /http:\/\/www\.iqiyi\.com\/(player\/(\d+\/Player|[a-z0-9]*)|common\/flashplayer\/\d+\/(Main)?Player_.*)\.swf/i,
+		find: /https?:\/\/www\.iqiyi\.com\/(player\/(\d+\/Player|[a-z0-9]*)|common\/flashplayer\/\d+\/(Main)?Player_.*)\.swf/i,
 		exfind: /(baidu|61|178)\.iqiyi\.com|weibo|yaku\.tv|bilibili|acfun/,
 		//		replace: getUrl('swf/iqiyi5.swf'),
 		//		replace: localflag ? getUrl('swf/iqiyi5.swf') : baesite[ getRandom(3) ] + 'iqiyi5.swf',
@@ -470,12 +470,12 @@ var redirectlist = [{
 		extra: "adkillrule"
 	}, {
 		name: "iqiyip2p",
-		find: /http:\/\/www\.iqiyi\.com\/common\/flashplayer\/\d+\/\d[a-z0-9]*.swf/i,
+		find: /https?:\/\/www\.iqiyi\.com\/common\/flashplayer\/\d+\/\d[a-z0-9]*.swf/i,
 		replace: 'http://www.iqiyi.com/player/20140709110406/20088.swf',
 		extra: "adkillrule"
 	}, {
 		name: "pps",
-		find: /http:\/\/www\.iqiyi\.com\/player\/cupid\/.*\/pps[\w]+.swf/i,
+		find: /https?:\/\/www\.iqiyi\.com\/player\/cupid\/.*\/pps[\w]+.swf/i,
 		replace: localflag ? getUrl('swf/pps.swf') : baesite[2] + 'pps.swf',
 		extra: "adkillrule"
 	}, {
@@ -545,13 +545,13 @@ var proxylist = [{
 		extra: "crossdomain"
 	},{
 		name: "crossdomain_iqiyi|pps-1",
-		find: /http:\/\/www\.iqiyi\.com\/(player\/(\d+\/Player|[a-z0-9]*|cupid\/.*\/(pps[\w]+|clear))|common\/flashplayer\/\d+\/(Main)?Player_.*)\.swf/i,
+		find: /https?:\/\/www\.iqiyi\.com\/(player\/(\d+\/Player|[a-z0-9]*|cupid\/.*\/(pps[\w]+|clear))|common\/flashplayer\/\d+\/(Main)?Player_.*)\.swf/i,
 		//monitor: /.*skins\/s[\d]+\.swf/i,
 		monitor: /http:\/\/data\.video\.qiyi\.com\/crossdomain\.xml/i,
 		extra: "crossdomain"
 	},{
 		name: "crossdomain_iqiyi|pps-2",
-		find: /http:\/\/www\.iqiyi\.com\/player\/cupid\/common\/icon\.swf/i,
+		find: /https?:\/\/www\.iqiyi\.com\/player\/cupid\/common\/icon\.swf/i,
 		//monitor: /.*skins\/s[\d]+\.swf/i,
 		monitor: /http:\/\/sf\.video\.qiyi\.com\/crossdomain\.xml/,
 		//monitor: /http:\/\/\d+.\d+.\d+.\d+\/crossdomain\.xml/i,
