@@ -3,14 +3,17 @@ Fork from Adkill and Media Download 0.42.3
 ========================
 This is a offline mod.
 * Seeking new features? Find it in Dev Branche.
+
 Requires:
 
 PPAPI Shockwave Flash <= 12.0.0.44
+
 Goolge Chrome >= 19
 
 OR
 
 PPAPI Shockwave Flash >= 11
+
 Goolge Chrome Stable >= 38
 
 No settings to configure
