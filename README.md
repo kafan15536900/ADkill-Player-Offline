@@ -1,8 +1,7 @@
-![ADkill Player Offline: Elegant China Video Adblock Extension in Chrome]
+! ADkill Player Offline: Elegant China Video Adblock Extension in Chrome
 
 > Fork from [Adkill and Media Download 0.42.3](https://github.com/adkill/Adkill-and-Media-Download)
 
-========================
 
 ## Features
 
