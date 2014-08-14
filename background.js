@@ -405,7 +405,7 @@ var redirectlist = [{
 	}, {
 		name: "ku6",
 		//find: /http:\/\/player\.ku6cdn\.com\/default\/common\/player\/\d*\/player\.swf/,
-		find: /http:\/\/player\.ku6cdn\.com\/default\/loader\/.*\/v\.swf/,
+		find: /http:\/\/player\.ku6cdn\.com\/default\/.*\/(v|player)\.swf/,
 		//		replace: getUrl('swf/ku6.swf'),
 		//		replace: localflag ? getUrl('swf/ku6.swf') : baesite[ getRandom(3) ] + 'ku6.swf',
 		replace: localflag ? getUrl('swf/ku6.swf') : baesite[2] + 'ku6.swf',
@@ -434,7 +434,7 @@ var redirectlist = [{
 		extra: "adkillrule"
 	}, {
 		name: "letv",
-		find: /http:\/\/.*letv[\w]*\.com\/.*\/((?!(Live|seed))(S[\w]{2,3})?[\w]{4})Player*\.swf/i,
+		find: /http:\/\/.*letv[\w]*\.com\/.*\/((?!(Live|seed))(S[\w]{2,3})?(?!Live)[\w]{4}|swf)Player*\.swf/i,
 		exfind: /(bili|acfun|com\/zt|duowan)/i,
 		//		replace: getUrl('swf/letv.swf'),
 		//		replace: localflag ? getUrl('swf/letv.swf') : baesite[ getRandom(3) ] + 'letv.swf',
