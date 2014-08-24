@@ -46,9 +46,9 @@
         "extra": "adkillrule"
     },
     {
-        "name": "letvpccs",
-        "find": "http:\/\/www.letv.com\/.*\/playerapi\/pccs_(?!live).*_(\d+)\.xml",
-        "replace": "http://www.letv.com/cmsdata/playerapi/pccs_sdk_$1.xml",
+        "name": "letv_skin",
+        "find": "http:\/\/.*letv[\w]*\.com\/p\/\d+\/\d+\/(?!1456)\d*\/newplayer\/\d+\/SLetvPlayer\.swf",
+        "replace": "http://player.letvcdn.com/p/201403/05/1456/newplayer/1/SLetvPlayer.swf",
         "extra": "adkillrule"
     },
     {
