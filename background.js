@@ -480,9 +480,15 @@ var redirectlist = [{
 		extra: "adkillrule"
 	}, {
 		name: "sohu",
-		find: /http:\/\/(tv\.sohu\.com\/upload\/swf\/.*\d+|61\.135\.176\.223\/.*)\/(main|PlayerShell)\.swf/i,
+		find: /http:\/\/tv\.sohu\.com\/upload\/swf\/(?!(live|\d+)).*\d+\/(main|PlayerShell)\.swf/i,
 		exfind: /(bili|acfun)/i,
 		replace: baesite[2] + 'sohu.swf',
+		extra: "adkillrule"
+	}, {
+		name: "sohu_live",
+		find: /http:\/\/tv\.sohu\.com\/upload\/swf\/(live\/|)\d+\/(main|PlayerShell)\.swf/i,
+		exfind: /(bili|acfun)/i,
+		replace: baesite[2] + 'sohu_live.swf',
 		extra: "adkillrule"
 	}, {
 		name: "duowan",
