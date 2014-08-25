@@ -486,7 +486,7 @@ var redirectlist = [{
 		extra: "adkillrule"
 	}, {
 		name: "sohu_live",
-		find: /http:\/\/tv\.sohu\.com\/upload\/swf\/(live\/|)\d+\/(main|PlayerShell)\.swf/i,
+		find: /http:\/\/(tv\.sohu\.com\/upload\/swf\/(live\/|)\d+|61\.135\.176\.223.*\/.*)\/(main|PlayerShell)\.swf/i,
 		exfind: /(bili|acfun)/i,
 		replace: baesite[2] + 'sohu_live.swf',
 		extra: "adkillrule"
@@ -545,9 +545,9 @@ var proxylist = [{
 		extra: "crossdomain"
 	},{
 		name: "crossdomain_sohu",
-		find: /http:\/\/tv\.sohu\.com\/upload\/swf\/.*\d+\/(main|PlayerShell)\.swf/i,
+		find: /http:\/\/(tv\.sohu\.com\/|61\.135\.176\.223.*).*\/(main|PlayerShell)\.swf/i,
 		//monitor: /.*skins\/s[\d]+\.swf/i,
-		monitor: /http:\/\/live\.tv\.sohu\.com\/crossdomain\.xml/i,
+		monitor: /http:\/\/(photocdn|live\.tv)\.sohu\.com\/crossdomain\.xml/i,
 		extra: "crossdomain"
 	},{
 		name: "crossdomain_iqiyi|pps-1",
