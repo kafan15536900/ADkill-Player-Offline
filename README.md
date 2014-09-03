@@ -1,4 +1,4 @@
-### ADkill Player Offline: Elegant China Video Adblock Extension for Chrome
+### ADfree Player Offline: Elegant China Video Adblock Extension for Chrome
 
 > Fork from [Adkill and Media Download 0.42.3](https://github.com/adkill/Adkill-and-Media-Download)
 
@@ -31,4 +31,4 @@ Post reply in [Kafan Forums](http://bbs.kafan.cn/thread-1514537-1-1.html)
 
 ## License
 
-ADkill Player Offline is released under the terms of the [GNU General Public License](http://www.gnu.org/licenses/) version 3 as published by the Free Software Foundation.
+ADfree Player Offline is released under the terms of the [GNU General Public License](http://www.gnu.org/licenses/) version 3 as published by the Free Software Foundation.
