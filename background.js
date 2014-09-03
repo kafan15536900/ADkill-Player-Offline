@@ -3,7 +3,7 @@
  * <http://bbs.kafan.cn/thread-1514537-1-1.html>,
  * Copyright (C) yndoc xplsy 15536900
  *
- * ADkill Player Offline is free software: you can redistribute it and/or
+ * ADfree Player Offline is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License version 3 as
  * published by the Free Software Foundation.
  *
