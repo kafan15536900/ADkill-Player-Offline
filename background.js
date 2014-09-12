@@ -11,9 +11,9 @@
  */
 
 var taburls = []; //存放tab的url与flag，用作判断重定向
-var baesite = ['','','http://127.0.0.1/']; //在线播放器地址.因lovejiani拥有大量免费流量,后面将较多的使用baesite[2].如果拥有自己的服务器也可在此修改
+var baesite = ['','yk.pp.navi.youku.com:80','http://127.0.0.1/']; //在线播放器地址.后面规则载入使用baesite[2].如果拥有自己的服务器也可在此修改baesite[2],baesite[1]将会被填充为crossdomain的代理地址
 var localflag = 1; //本地模式开启标示,1为本地,0为在线.在特殊网址即使开启本地模式仍会需要使用在线服务器,程序将会自行替换
-var proxyflag = 0;	//proxy调试标记
+var proxyflag = "";	//proxy调试标记
 var cacheflag = false;	//用于确定是否需要清理缓存,注意由于隐身窗口的cookie与缓存都独立与普通窗口,因此使用API无法清理隐身窗口的缓存与cookie.
 //var xhr = new XMLHttpRequest();	
 
@@ -32,7 +32,7 @@ var pac = {
   }
 };
 //Permission Check + Proxy Control
-function ProxyControl(pram) {
+function ProxyControl(pram , ip) {
 	chrome.proxy.settings.get({incognito: false}, function(config){
 		//console.log(config.levelOfControl);
 		//console.log(config);
@@ -42,7 +42,7 @@ function ProxyControl(pram) {
 			case "controllable_by_this_extension":
 			// 可获得proxy控制权限，显示信息
 			console.log("Have Proxy Permission");
-			proxyflag = 1;
+//			proxyflag = 1;
 			if(pram == "set"){
 				console.log("Setup Proxy");
 				chrome.proxy.settings.set({value: pac, scope: "regular"}, function(details) {});
@@ -52,11 +52,12 @@ function ProxyControl(pram) {
 			case "controlled_by_this_extension":
 			// 已控制proxy，显示信息
 			console.log("Already controlled");
-			proxyflag = 2;
+//			proxyflag = 2;
 			if(pram == "unset"){
 				console.log("Release Proxy");
 				chrome.proxy.settings.clear({scope: "regular"});
-				FlushCache();
+				if(typeof(ip) == 'undefined') ip = "none";
+				FlushCache(ip);
 			}
 			break;
 
@@ -64,14 +65,14 @@ function ProxyControl(pram) {
 			// 未获得proxy控制权限，显示信息
 			console.log("No Proxy Permission");
 			console.log("Skip Proxy Control");
-			proxyflag = 0;
+//			proxyflag = 0;
 			break;
 
 		}
 	});
 }
-function FlushCache() {
-	if(cacheflag) {
+function FlushCache(ip) {
+	if(!chrome.runtime.lastError && ( cacheflag && ip.slice(0,ip.lastIndexOf(".")) != proxyflag.slice(0,proxyflag.lastIndexOf(".")) || ip == "none") ) { //ip地址前3段一致即可,如果上次出错则跳过
 		chrome.browsingData.remove(
 			{},{
 			"cache": true,
@@ -106,6 +107,13 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
 
 chrome.webRequest.onCompleted.addListener(function(details) {
 	for (var i = 0; i < proxylist.length; i++) {
+		//获取Proxy的具体IP地址
+		if(details.url.indexOf(baesite[1].slice(0,-6)) >= 0 && details.url.indexOf("crossdomain.xml") >= 0) {  //:xxxxx 6个字符,差不多就行
+			console.log(details.url);
+			proxyflag = details.ip;
+			console.log("Capture Proxy IP :" + proxyflag);
+			return;
+		}
 		if (proxylist[i].monitor.test(details.url) && proxylist[i].extra == "crossdomain") {
 			//console.log(details);
 			cacheflag = false;
@@ -115,7 +123,7 @@ chrome.webRequest.onCompleted.addListener(function(details) {
 
 				default:
 				console.log("Now Release Proxy ");
-				ProxyControl("unset");
+				ProxyControl("unset" , details.ip);
 				break;
 
 			}
@@ -134,6 +142,13 @@ chrome.tabs.onCreated.addListener(function(tab) {
 chrome.tabs.onRemoved.addListener(function(tabId) {
 	ProxyControl("unset");
 });
+//获取代理IP
+function getProxyIP() {
+	var xhr = new XMLHttpRequest();
+	url = "http://" + baesite[1] + "/crossdomain.xml";
+	xhr.open("GET", url, true);
+	xhr.send();
+}
 //====================================Headers Modifier Test
 chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 	//console.log(details);
@@ -198,6 +213,16 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 },{urls: ["http://*/*", "https://*/*"]},
 ["blocking", "requestHeaders"]);
 
+//====================================CSS injector
+function insertCSS(tabId , Details) {
+	chrome.tabs.insertCSS(tabId ,Details, function() {
+		if (chrome.runtime.lastError) {
+			console.log('Not allowed to inject CSS into page.');
+		} else {
+			console.log('CSS : Injected style!');
+		}
+	});
+}
 //====================================
 
 ///阻挡广告及重定向
@@ -333,6 +358,10 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
 						console.log("Can not redirect Player!");
 						newUrl = url;
 					}
+				if (/tudou\.com/i.test(testUrl)) {
+					console.log("Tudou CSS");
+					insertCSS(details.tabId ,{code: ".player {height: 465px !important;}"});
+				}
 				break;
 
 				case "sohu":
@@ -379,6 +408,9 @@ chrome.tabs.onRemoved.addListener(function(tabId) {
 	if (taburls[id])
 		delete taburls[id];
 });
+
+//启动
+getProxyIP();
 
 //URL重定向规则(用于替换播放器)
 /*格式：
