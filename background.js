@@ -360,7 +360,7 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
 					}
 				if (/tudou\.com/i.test(testUrl)) {
 					console.log("Tudou CSS");
-					insertCSS(details.tabId ,{code: ".player {height: 465px !important;}"});
+					insertCSS(details.tabId ,{code: ".player {height: inherit !important;}"});
 				}
 				break;
 
