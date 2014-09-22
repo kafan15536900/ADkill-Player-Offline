@@ -466,7 +466,7 @@ var redirectlist = [{
 		extra: "adkillrule"
 	}, {
 		name: "letv",
-		find: /http:\/\/.*letv[\w]*\.com\/.*\/((?!(Live|seed))(S[\w]{2,3})?(?!Live)[\w]{4}|swf)Player*\.swf/i,
+		find: /http:\/\/.*letv[\w]*\.com\/.*\/((?!(Live|seed|Disk))((C|S)[\w]{2,3})?(?!Live)[\w]{4}|swf)Player*\.swf/i,
 		exfind: /(bili|acfun|com\/zt|duowan)/i,
 		//		replace: getUrl('swf/letv.swf'),
 		//		replace: localflag ? getUrl('swf/letv.swf') : baesite[ getRandom(3) ] + 'letv.swf',
@@ -495,7 +495,7 @@ var redirectlist = [{
 	}, {
 		name: "iqiyi",
 		find: /https?:\/\/www\.iqiyi\.com\/(player\/(\d+\/Player|[a-z0-9]*)|common\/flashplayer\/\d+\/(Main|Share)?Player_.*)\.swf/i,
-		exfind: /(baidu|61|178)\.iqiyi\.com|weibo|yaku\.tv|bilibili|acfun/,
+		exfind: /(baidu|61|178)\.iqiyi\.com|weibo|yaku\.tv|bilibili|acfun|music\.baidu/,
 		//		replace: getUrl('swf/iqiyi5.swf'),
 		//		replace: localflag ? getUrl('swf/iqiyi5.swf') : baesite[ getRandom(3) ] + 'iqiyi5.swf',
 		replace: localflag ? getUrl('swf/iqiyi5.swf') : baesite[2] + 'iqiyi5.swf',
