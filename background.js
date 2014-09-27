@@ -466,7 +466,7 @@ var redirectlist = [{
 		extra: "adkillrule"
 	}, {
 		name: "letv",
-		find: /http:\/\/.*letv[\w]*\.com\/.*\/((?!(Live|seed|Disk))((C|S)[\w]{2,3})?(?!Live)[\w]{4}|swf)Player*\.swf/i,
+		find: /http:\/\/.*letv[\w]*\.com\/.*\/((?!(Live|seed|Disk))(S[\w]{2,3})?(?!Live)[\w]{4}|swf)Player*\.swf/i,
 		exfind: /(bili|acfun|com\/zt|duowan)/i,
 		//		replace: getUrl('swf/letv.swf'),
 		//		replace: localflag ? getUrl('swf/letv.swf') : baesite[ getRandom(3) ] + 'letv.swf',
