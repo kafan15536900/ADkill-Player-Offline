@@ -14,10 +14,10 @@ _* Seeking new features? Find it in Dev Branche._
 ## Requirements
 
 - PPAPI Shockwave Flash <= 12.0.0.44
-- Goolge Chrome >= 19
+- Google Chrome >= 19
 - - OR
 - PPAPI Shockwave Flash >= 11
-- Goolge Chrome Stable >= 38
+- Google Chrome Stable >= 38
 
 ## Contact
 
