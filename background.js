@@ -63,6 +63,7 @@ function ProxyControl(pram , ip) {
 
 			default:
 			// 未获得proxy控制权限，显示信息
+			warn(); //增加提示
 			console.log("No Proxy Permission");
 			console.log("Skip Proxy Control");
 //			proxyflag = 0;
@@ -412,6 +413,18 @@ chrome.tabs.onRemoved.addListener(function(tabId) {
 //启动
 getProxyIP();
 
+//增加无权限提示
+function warn() {
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {	//获取当前活动tab id
+//		if(pram=="set") {
+			chrome.browserAction.setBadgeText({"text": "STOP", tabId: tabs[0].id});	//提醒
+/*		}else{
+			chrome.browserAction.setBadgeText({"text": "", tabId: tabs[0].id});	//清除提醒
+		}
+*/
+	});
+}
+
 //URL重定向规则(用于替换播放器)
 /*格式：
 	name:规则名称
@@ -474,13 +487,8 @@ var redirectlist = [{
 		extra: "adkillrule"
 	}, {
 		name: "letvpccs",
-		find: /http:\/\/www.letv.com\/zt\/cmsapi\/playerapi\/pccs_(?!live).*_(\d+)\.xml/i,
-		replace: "http://www.letv.com/zt/cmsapi/playerapi/pccs_sdk_$1.xml",
-		extra: "adkillrule"
-	}, {
-		name: "letvhzpccs",
 		find: /http:\/\/www.letv.com\/.*\/playerapi\/pccs_(?!live).*_(\d+)\.xml/i,
-		replace: "http://www.letv.com/zt/cmsapi/playerapi/pccs_sdk_2014061610.xml",
+		replace: "http://www.letv.com/cmsdata/playerapi/pccs_sdk_$1.xml",
 		extra: "adkillrule"
 	},/*{
 		name: "letvskin",
@@ -494,21 +502,16 @@ var redirectlist = [{
 		extra: "adkillrule"
 	}, {
 		name: "iqiyi",
-		find: /https?:\/\/www\.iqiyi\.com\/(player\/(\d+\/Player|[a-z0-9]*)|common\/flashplayer\/\d+\/(Main|Share)?Player_.*)\.swf/i,
-		exfind: /(baidu|61|178)\.iqiyi\.com|weibo|yaku\.tv|bilibili|acfun|music\.baidu/,
+		find: /https?:\/\/www\.iqiyi\.com\/(player\/(\d+\/Player|[a-z0-9]*)|common\/flashplayer\/\d+\/(Main|Share)?Player.*_(.|ad\d+))\.swf/i,
+		exfind: /(baidu|61|178)\.iqiyi\.com|weibo|yaku\.tv|bilibili|acfun|(music|tieba)\.baidu/,
 		//		replace: getUrl('swf/iqiyi5.swf'),
 		//		replace: localflag ? getUrl('swf/iqiyi5.swf') : baesite[ getRandom(3) ] + 'iqiyi5.swf',
 		replace: localflag ? getUrl('swf/iqiyi5.swf') : baesite[2] + 'iqiyi5.swf',
 		extra: "adkillrule"
 	}, {
-		name: "iqiyip2p",
-		find: /https?:\/\/www\.iqiyi\.com\/common\/flashplayer\/\d+\/\d[a-z0-9]*.swf/i,
-		replace: 'http://www.iqiyi.com/player/20140709110406/20088.swf',
-		extra: "adkillrule"
-	}, {
 		name: "pps",
-		find: /https?:\/\/www\.iqiyi\.com\/player\/cupid\/.*\/pps[\w]+.swf/i,
-		replace: localflag ? getUrl('swf/pps.swf') : baesite[2] + 'pps.swf',
+		find: /https?:\/\/www\.iqiyi\.com\/common\/.*\/pps[\w]+.swf/i,
+		replace: localflag ? getUrl('swf/iqiyi_out.swf') : baesite[2] + 'iqiyi_out.swf',
 		extra: "adkillrule"
 	}, {
 		name: "sohu",
@@ -582,17 +585,22 @@ var proxylist = [{
 		monitor: /http:\/\/(photocdn|live\.tv)\.sohu\.com\/crossdomain\.xml/i,
 		extra: "crossdomain"
 	},{
-		name: "crossdomain_iqiyi|pps-1",
+		name: "crossdomain_iqiyi|pps-c1",
 		find: /https?:\/\/www\.iqiyi\.com\/(player\/(\d+\/Player|[a-z0-9]*|cupid\/.*\/(pps[\w]+|clear))|common\/flashplayer\/\d+\/(Main|Share)?Player_.*)\.swf/i,
 		//monitor: /.*skins\/s[\d]+\.swf/i,
-		monitor: /http:\/\/data\.video\.qiyi\.com\/crossdomain\.xml/i,
+		monitor: /notavailable/,
 		extra: "crossdomain"
 	},{
-		name: "crossdomain_iqiyi|pps-2",
+		name: "crossdomain_iqiyi|pps-c2",
 		find: /https?:\/\/www\.iqiyi\.com\/player\/cupid\/common\/icon\.swf/i,
 		//monitor: /.*skins\/s[\d]+\.swf/i,
-		monitor: /http:\/\/sf\.video\.qiyi\.com\/crossdomain\.xml/,
+		monitor: /notavailable/,
 		//monitor: /http:\/\/\d+.\d+.\d+.\d+\/crossdomain\.xml/i,
+		extra: "crossdomain"
+	},{
+		name: "crossdomain_iqiyi|pps-main",
+		find: /https?:\/\/.*(iqiyi|pps)\.com\/.*\.htm/i,
+		monitor: /\/(common\/icon\.swf|vodpb\.gif\?url|adpb\.gif\?pbtp=show)/i,
 		extra: "crossdomain"
 	}
 	]
