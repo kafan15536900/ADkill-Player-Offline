@@ -33,44 +33,63 @@ var pac = {
 };
 //Permission Check + Proxy Control
 function ProxyControl(pram , ip) {
-	chrome.proxy.settings.get({incognito: false}, function(config){
-		//console.log(config.levelOfControl);
-		//console.log(config);
-		//console.log(pac);
-
-		switch(config.levelOfControl) {
-			case "controllable_by_this_extension":
-			// 可获得proxy控制权限，显示信息
-			console.log("Have Proxy Permission");
-//			proxyflag = 1;
-			if(pram == "set"){
-				console.log("Setup Proxy");
-				chrome.proxy.settings.set({value: pac, scope: "regular"}, function(details) {});
+	if(versionPraser() > 39 ) {	//用于应对Chrome 40版本中引入的Proxy BUG
+		console.log("Proxy: Chrome > 39");
+		if(pram == "set"){
+			console.log("Setup Proxy");
+			chrome.proxy.settings.set({value: pac, scope: "regular"}, function(details) {});
 			}
-			break;
+		if(pram == "unset"){
+			console.log("Release Proxy");
+			chrome.proxy.settings.clear({scope: "regular"});
+			if(typeof(ip) == 'undefined') ip = "none";
+			FlushCache(ip);
+			}			
+	} else {
+		chrome.proxy.settings.get({incognito: false}, function(config){
+			//console.log(config.levelOfControl);
+			//console.log(config);
+			//console.log(pac);
+			try
+			{
+				switch(config.levelOfControl) {
+					case "controllable_by_this_extension":
+					// 可获得proxy控制权限，显示信息
+					console.log("Have Proxy Permission");
+	//				proxyflag = 1;
+					if(pram == "set"){
+						console.log("Setup Proxy");
+						chrome.proxy.settings.set({value: pac, scope: "regular"}, function(details) {});
+					}
+					break;	
 
-			case "controlled_by_this_extension":
-			// 已控制proxy，显示信息
-			console.log("Already controlled");
-//			proxyflag = 2;
-			if(pram == "unset"){
-				console.log("Release Proxy");
-				chrome.proxy.settings.clear({scope: "regular"});
-				if(typeof(ip) == 'undefined') ip = "none";
-				FlushCache(ip);
+					case "controlled_by_this_extension":
+					// 已控制proxy，显示信息
+					console.log("Already controlled");
+	//				proxyflag = 2;
+					if(pram == "unset"){
+						console.log("Release Proxy");
+						chrome.proxy.settings.clear({scope: "regular"});
+						if(typeof(ip) == 'undefined') ip = "none";
+						FlushCache(ip);
+					}
+					break;	
+
+					default:
+					// 未获得proxy控制权限，显示信息
+					warn();	//添加无权限提醒
+					console.log("No Proxy Permission");
+					console.log("Skip Proxy Control");
+	//				proxyflag = 0;
+					break;	
+
+				}
 			}
-			break;
-
-			default:
-			// 未获得proxy控制权限，显示信息
-			warn(); //增加提示
-			console.log("No Proxy Permission");
-			console.log("Skip Proxy Control");
-//			proxyflag = 0;
-			break;
-
-		}
-	});
+			catch(err){
+				console.log("ERROR:Can Not Read Proxy !");
+			}
+		});
+	}
 }
 function FlushCache(ip) {
 	if(!chrome.runtime.lastError && ( cacheflag && ip.slice(0,ip.lastIndexOf(".")) != proxyflag.slice(0,proxyflag.lastIndexOf(".")) || ip == "none") ) { //ip地址前3段一致即可,如果上次出错则跳过
@@ -330,7 +349,7 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
 						console.log("Judge Flag");
 						v5flag = taburls[id][1]; //读取flag存储
 						if (!v5flag || /pps\.tv/i.test(testUrl)) {	//不满足v5条件换成v4,或者在pps.tv域名下强制改变
-							newUrl = newUrl.replace(/iqiyi5/i, 'iqiyi');
+							newUrl = newUrl.replace(/iqiyi5/i, 'iqiyi_out');
 						} 
 					}
 				}
@@ -361,7 +380,7 @@ chrome.webRequest.onBeforeRequest.addListener(function(details) {
 					}
 				if (/tudou\.com/i.test(testUrl)) {
 					console.log("Tudou CSS");
-					insertCSS(details.tabId ,{code: ".player {height: inherit !important;}"});
+					insertCSS(details.tabId ,{code: ".player {height: 465px !important;}"});
 				}
 				break;
 
@@ -423,6 +442,10 @@ function warn() {
 		}
 */
 	});
+}
+
+function versionPraser() {
+	return(parseInt(/\d+/i.exec(/Chrome\/\d+\.\d+\.\d+\.\d+/i.exec(navigator.userAgent))));
 }
 
 //URL重定向规则(用于替换播放器)
@@ -487,8 +510,8 @@ var redirectlist = [{
 		extra: "adkillrule"
 	}, {
 		name: "letvpccs",
-		find: /http:\/\/www.letv.com\/.*\/playerapi\/pccs_(?!live).*_(\d+)\.xml/i,
-		replace: "http://www.letv.com/cmsdata/playerapi/pccs_sdk_$1.xml",
+		find: /http:\/\/www.letv.com\/.*\/playerapi\/pccs_(?!(live|sdk)).*_?(\d+)\.xml/i,
+		replace: "http://www.letv.com/cmsdata/playerapi/pccs_sdk_20141113.xml",
 		extra: "adkillrule"
 	},/*{
 		name: "letvskin",
@@ -515,7 +538,7 @@ var redirectlist = [{
 		extra: "adkillrule"
 	}, {
 		name: "sohu",
-		find: /http:\/\/tv\.sohu\.com\/upload\/swf\/(?!(live|\d+)).*\d+\/(main|PlayerShell)\.swf/i,
+		find: /http:\/\/tv\.sohu\.com\/upload\/swf\/(?!(live|\d+|ap)).*\d+\/(main|PlayerShell)\.swf/i,
 		exfind: /(bili|acfun)/i,
 		replace: baesite[2] + 'sohu.swf',
 		extra: "adkillrule"
@@ -588,7 +611,7 @@ var proxylist = [{
 		name: "crossdomain_iqiyi|pps-c1",
 		find: /https?:\/\/www\.iqiyi\.com\/(player\/(\d+\/Player|[a-z0-9]*|cupid\/.*\/(pps[\w]+|clear))|common\/flashplayer\/\d+\/(Main|Share)?Player_.*)\.swf/i,
 		//monitor: /.*skins\/s[\d]+\.swf/i,
-		monitor: /notavailable/,
+		monitor: /http:\/\/\d+.\d+.\d+.\d+\/crossdomain\.xml/,
 		extra: "crossdomain"
 	},{
 		name: "crossdomain_iqiyi|pps-c2",
@@ -600,7 +623,7 @@ var proxylist = [{
 	},{
 		name: "crossdomain_iqiyi|pps-main",
 		find: /https?:\/\/.*(iqiyi|pps)\.com\/.*\.htm/i,
-		monitor: /\/(common\/icon\.swf|vodpb\.gif\?url|adpb\.gif\?pbtp=show)/i,
+		monitor: /notavailable/i,
 		extra: "crossdomain"
 	}
 	]
