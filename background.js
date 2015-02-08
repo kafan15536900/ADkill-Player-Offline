@@ -14,6 +14,7 @@ var taburls = []; //存放tab的url与flag，用作判断重定向
 var baesite = ['','yk.pp.navi.youku.com:80','http://127.0.0.1/']; //在线播放器地址.后面规则载入使用baesite[2].如果拥有自己的服务器也可在此修改baesite[2],baesite[1]将会被填充为crossdomain的代理地址
 var localflag = 1; //本地模式开启标示,1为本地,0为在线.在特殊网址即使开启本地模式仍会需要使用在线服务器,程序将会自行替换
 var proxyflag = "";	//proxy调试标记
+var proxyget = 0;//在proxy部分将被临时使用
 var cacheflag = false;	//用于确定是否需要清理缓存,注意由于隐身窗口的cookie与缓存都独立与普通窗口,因此使用API无法清理隐身窗口的缓存与cookie.
 //var xhr = new XMLHttpRequest();	
 
@@ -129,6 +130,9 @@ chrome.webRequest.onCompleted.addListener(function(details) {
 	for (var i = 0; i < proxylist.length; i++) {
 		//获取Proxy的具体IP地址
 		if(details.url.indexOf(baesite[1].slice(0,-6)) >= 0 && details.url.indexOf("crossdomain.xml") >= 0) {  //:xxxxx 6个字符,差不多就行
+			//只在扩展启动时处理
+			if(!proxyget) return; //不在过程中就终止
+			proxyget = 0;
 			console.log(details.url);
 			proxyflag = details.ip;
 			console.log("Capture Proxy IP :" + proxyflag);
@@ -164,6 +168,7 @@ chrome.tabs.onRemoved.addListener(function(tabId) {
 });
 //获取代理IP
 function getProxyIP() {
+	proxyget = 1;  //设置标记
 	var xhr = new XMLHttpRequest();
 	url = "http://" + baesite[1] + "/crossdomain.xml";
 	xhr.open("GET", url, true);
@@ -567,6 +572,11 @@ var refererslist = [{
 		find: /f\.youku\.com/i,
 		replace: "http://player.youku.com/player.php",
 		extra: ""	//use "remove" is also acceptable
+	},{
+		name: "referer_youku2",
+		find: /v\.youku\.com/i,
+		replace: "",
+		extra: "remove"
 	},{
 		name: "referer_56",
 		find: /\.56\.com/i,
